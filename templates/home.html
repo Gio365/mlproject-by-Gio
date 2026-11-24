@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Nilai Matematika | Student Performance ML</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.78);
+            --input-bg: rgba(15, 23, 42, 0.8);
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --accent: #38bdf8;
+            --success: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a 55%, #020617);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .wrapper {
+            max-width: 820px;
+            width: 100%;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--text-main);
+        }
+
+        .badge {
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 0.35rem 0.85rem;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.55);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 1.85rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 60%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.85rem 1rem;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        select:focus, input[type="number"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+        }
+
+        select option {
+            background: #1e293b;
+            color: var(--text-main);
+        }
+
+        .submit-btn {
+            margin-top: 1.75rem;
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, #4338ca 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 1rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.5);
+            transition: all 0.25s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.7);
+            background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+        }
+
+        .result-box {
+            margin-top: 2rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(56, 189, 248, 0.15) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 18px;
+            padding: 1.75rem;
+            text-align: center;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6ee7b7;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-score {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.1;
+        }
+
+        .result-score span {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 640px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            .card {
+                padding: 1.75rem 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="top-nav">
+            <a href="{{ url_for('index') }}" class="back-link">← Kembali ke Beranda</a>
+            <span class="badge">MLProject by Gio</span>
+        </div>
+
+        <div class="card">
+            <div class="header">
+                <h1>Student Exam Performance Prediction</h1>
+                <p>Lengkapi data siswa di bawah ini untuk memprediksi nilai ujian Matematika</p>
+            </div>
+
+            <form action="{{ url_for('predict_datapoint') }}" method="post">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Jenis Kelamin (Gender)</label>
+                        <select name="gender" required>
+                            <option selected disabled value="">Pilih Gender...</option>
+                            <option value="male">Laki-laki (Male)</option>
+                            <option value="female">Perempuan (Female)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kelompok Etnis (Race / Ethnicity)</label>
+                        <select name="ethnicity" required>
+                            <option selected disabled value="">Pilih Kelompok...</option>
+                            <option value="group A">Group A</option>
+                            <option value="group B">Group B</option>
+                            <option value="group C">Group C</option>
+                            <option value="group D">Group D</option>
+                            <option value="group E">Group E</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Pendidikan Terakhir Orang Tua (Parental Level of Education)</label>
+                        <select name="parental_level_of_education" required>
+                            <option selected disabled value="">Pilih Tingkat Pendidikan Orang Tua...</option>
+                            <option value="some high school">Some High School (SMA belum tamat)</option>
+                            <option value="high school">High School (Lulusan SMA)</option>
+                            <option value="some college">Some College (Pernah Kuliah)</option>
+                            <option value="associate's degree">Associate's Degree (Diploma / D3)</option>
+                            <option value="bachelor's degree">Bachelor's Degree (Sarjana / S1)</option>
+                            <option value="master's degree">Master's Degree (Magister / S2)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipe Makan Siang (Lunch Type)</label>
+                        <select name="lunch" required>
+                            <option selected disabled value="">Pilih Tipe Makan Siang...</option>
+                            <option value="standard">Standard (Reguler)</option>
+                            <option value="free/reduced">Free / Reduced (Subsidi)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kursus Persiapan Ujian (Test Prep)</label>
+                        <select name="test_preparation_course" required>
+                            <option selected disabled value="">Pilih Status Kursus...</option>
+                            <option value="none">None (Tidak Mengikuti)</option>
+                            <option value="completed">Completed (Selesai Mengikuti)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nilai Membaca (Reading Score) <span>0 - 100</span></label>
+                        <input type="number" name="reading_score" placeholder="Contoh: 78" min="0" max="100" step="1" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nilai Menulis (Writing Score) <span>0 - 100</span></label>
+                        <input type="number" name="writing_score" placeholder="Contoh: 82" min="0" max="100" step="1" required />
+                    </div>
+                </div>
+
+                <button class="submit-btn" type="submit">
+                    🚀 Prediksi Nilai Matematika Sekarang
+                </button>
+            </form>
+
+            {% if results is defined %}
+            <div class="result-box">
+                <div class="result-label">Hasil Prediksi Nilai Matematika (Math Score)</div>
+                <div class="result-score">
+                    {{ "%.2f"|format(results) }} <span>/ 100</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
