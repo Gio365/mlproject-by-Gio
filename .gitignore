@@ -151,7 +151,8 @@ activemq-data/
 
 # Environments
 .vscode/
-artifacts/
+logs/
+catboost_info/
 .env
 .envrc
 .venv
