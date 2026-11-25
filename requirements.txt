@@ -1,9 +1,11 @@
+Flask
 pandas
 numpy
-seaborn
-matplotlib
 scikit-learn
-catboost
-xgboost
 dill
-Flask
+
+# Optional: only needed for local EDA & model training
+# seaborn
+# matplotlib
+# catboost
+# xgboost
